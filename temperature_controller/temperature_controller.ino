@@ -48,7 +48,13 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 // Target temperature control
 #define DOWN_INPUT_PIN 6
 #define UP_INPUT_PIN 7
-#define FREEZER_CONTROL_PIN 1
+
+// Be careful about changing this. You will also need to change the
+// freezerCurrentlyOn() function appropriately. See:
+//   http://www.arduino.cc/en/Reference/PortManipulation and
+//   http://arduino.cc/en/Hacking/PinMapping168
+// for details.
+#define FREEZER_CONTROL_PIN 9
 
 // How long to wait before turning on the compressor again (in seconds)
 #define MIN_COMPRESSOR_WAIT 600L
@@ -200,7 +206,7 @@ void checkButtonStatus() {
 }
 
 boolean freezerCurrentlyOn() {
-  return bitRead(PORTD,FREEZER_CONTROL_PIN) == HIGH;
+  return bitRead(PORTB,1) == HIGH;
 }
 
 void checkTemperature(float temp) {
@@ -218,11 +224,9 @@ void checkTemperature(float temp) {
   }
   else {
     secondsSinceLastCooling += 1;
-    if (temp > (targetTemp + 1) && (secondsSinceLastCooling > MIN_COMPRESSOR_WAIT)) {
+    if ((temp > (targetTemp + 1)) && (secondsSinceLastCooling > MIN_COMPRESSOR_WAIT)) {
       Serial.println("Turning freezer on");
       digitalWrite(FREEZER_CONTROL_PIN, HIGH);
-    } else {
-      digitalWrite(FREEZER_CONTROL_PIN, LOW);
     }
   }
 }
