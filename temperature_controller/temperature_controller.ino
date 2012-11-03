@@ -57,9 +57,16 @@ long secondsSinceLastCooling = MIN_COMPRESSOR_WAIT + 1;
 int samples[NUMSAMPLES];
 float targetTemp = 50.0;
 
+// Special program setup
+float initialProgramTemp = 44.0;
+float finalProgramTemp = 50.0;
+double programSeconds = 172800;  // 48 hours
+double programCounter = -1;
+
 // the setup routine runs once when you press reset:
 void setup() {
   analogReference(EXTERNAL);
+  Serial.begin(9600);
 
   // set up the LCD's number of columns and rows: 
   lcd.begin(16, 2);
@@ -72,11 +79,24 @@ void setup() {
 
 void loop() {
   checkButtonStatus();
+  updateSpecialProgram();
   float temp = getTemperature();
   checkTemperature(temp);
   updateLCD(temp);
   //debugToSerial(temp);
   delay(1000);
+}
+
+void updateSpecialProgram() {
+  if (programCounter >= programSeconds) {
+    programCounter = -1L;
+  }
+  
+  if (programCounter >= 0L) {
+    programCounter += 1L;
+    double pct = (programCounter / programSeconds);
+    targetTemp = (initialProgramTemp + ( pct * (finalProgramTemp - initialProgramTemp) ) );
+  }
 }
 
 boolean debounce(int pin) {
@@ -163,12 +183,19 @@ void debugToSerial(float temp) {
 }
 
 void checkButtonStatus() {
-    if (debounce(DOWN_INPUT_PIN)) {
-    targetTemp = targetTemp - 1;
+  // If both buttons pressed, start special program
+  if (debounce(DOWN_INPUT_PIN) && debounce(UP_INPUT_PIN)) {
+    programCounter = 1L;
   }
-
-  if (debounce(UP_INPUT_PIN)) {
-    targetTemp = targetTemp + 1;
+  else {
+    // Down button pressed
+    if (debounce(DOWN_INPUT_PIN)) {
+      targetTemp = targetTemp - 1;
+    }
+    // Up button pressed
+    if (debounce(UP_INPUT_PIN)) {
+      targetTemp = targetTemp + 1;
+    }
   }
 }
 
@@ -194,13 +221,8 @@ void checkTemperature(float temp) {
     if (temp > (targetTemp + 1) && (secondsSinceLastCooling > MIN_COMPRESSOR_WAIT)) {
       Serial.println("Turning freezer on");
       digitalWrite(FREEZER_CONTROL_PIN, HIGH);
-      delay(100);
-      Serial.println(bitRead(PORTD,FREEZER_CONTROL_PIN));
     } else {
-      Serial.println("Writing low to freezer pin");
       digitalWrite(FREEZER_CONTROL_PIN, LOW);
-      delay(100);
-      Serial.println(bitRead(PORTD,FREEZER_CONTROL_PIN));
     }
   }
 }
