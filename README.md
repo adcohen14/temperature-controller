@@ -2,9 +2,19 @@
 
 Arduino sketch for controlling the temperature of a freezer.
 
+Features:
+
+ * Predictive shutoff to keep the temperature somewhat accurate
+ * Protection against compressor burnout
+ * Temperature up/down buttons
+ * Special program setting for unattended temperature control
+ * LCD readout of current temperature and target temperature
+
 ## Todo
 
-More to come, including circuit diagram and documentation.
+ * Circuit diagram
+ * Better documentation
+ * Network access for statistics collection
 
 ## License
 
