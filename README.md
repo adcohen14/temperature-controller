@@ -10,9 +10,10 @@ Features:
  * Special program setting for unattended temperature control
  * LCD readout of current temperature and target temperature
 
+The diagram was created with Fritzing (http://fritzing.org).
+
 ## Todo
 
- * Circuit diagram
  * Better documentation
  * Network access for statistics collection
 
