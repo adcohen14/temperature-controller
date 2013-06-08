@@ -57,7 +57,7 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 #define FREEZER_CONTROL_PIN 9
 
 // How long to wait before turning on the compressor again (in seconds)
-#define MIN_COMPRESSOR_WAIT 600L
+#define MIN_COMPRESSOR_WAIT 1200L
 
 long secondsSinceLastCooling = MIN_COMPRESSOR_WAIT + 1;
 int samples[NUMSAMPLES];
