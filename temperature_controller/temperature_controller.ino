@@ -217,6 +217,8 @@ void checkTemperature(float temp) {
   /*
   If the freezer is on, keep on until target - 1.5.
   If the freezer is off, turn it on when temp > target + 1
+  ADDING SOME MORE STUFF RIGHT HERE
+  LETS SEE HOW EASY IT IS TO FIND IT
   */
   if (freezerCurrentlyOn()) {
     secondsSinceLastCooling = 0;
