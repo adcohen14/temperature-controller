@@ -1,7 +1,8 @@
 /*
  * Temperature Controller
  *
- * I'm just making some changes to see how the whole cms dealy works
+ * DELETING MY PREVIOUS COMMENTS BELOW
+ * 
  * Hopefully it makes some sort of sense
  * THIS IS THE END OF MY CHANGES
  *
@@ -218,6 +219,7 @@ void checkTemperature(float temp) {
   If the freezer is on, keep on until target - 1.5.
   If the freezer is off, turn it on when temp > target + 1
   ADDING SOME MORE STUFF RIGHT HERE
+  AND ONE MORE LINE
   LETS SEE HOW EASY IT IS TO FIND IT
   */
   if (freezerCurrentlyOn()) {
